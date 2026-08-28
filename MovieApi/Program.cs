@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Setup database connection
-var connectionString = builder.Configuration.GetConnectionString("MovieApiDb") ?? throw new InvalidOperationException("Connection string 'MovieApiDb' not found.");
+var connectionString = builder.Configuration.GetConnectionString("MovieApiConnection") ?? throw new InvalidOperationException("Connection string 'MovieApiConnection' not found.");
 builder.Services.AddDbContext<MovieApiContext>(options => options.UseSqlServer(connectionString));
 
 // Add services to the container.
