@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using MovieApi.Models;
 
 namespace MovieApi.Controllers
 {

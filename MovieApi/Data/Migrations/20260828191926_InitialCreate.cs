@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace MovieApi.Migrations
+namespace MovieApi.Data.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
@@ -11,7 +11,7 @@ namespace MovieApi.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Movie",
+                name: "Movies",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -26,7 +26,7 @@ namespace MovieApi.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Movie", x => x.Id);
+                    table.PrimaryKey("PK_Movies", x => x.Id);
                 });
         }
 
@@ -34,7 +34,7 @@ namespace MovieApi.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Movie");
+                name: "Movies");
         }
     }
 }

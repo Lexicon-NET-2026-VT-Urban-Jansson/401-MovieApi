@@ -1,0 +1,43 @@
+@MovieApi_HostAddress = http://localhost:5225
+@movieId = 14
+
+### Get all movies 
+GET {{MovieApi_HostAddress}}/api/movies
+Accept: application/json
+
+### Get movie X 
+GET {{MovieApi_HostAddress}}/api/movies/{{movieId}}
+Accept: application/json
+
+### Delete movie X
+DELETE {{MovieApi_HostAddress}}/api/movies/{{movieId}}
+Accept: application/json
+
+### POST new movie (full)
+POST {{MovieApi_HostAddress}}/api/movies/
+Content-Type: application/json
+
+{
+  "title": "NEW! Tasty Plastic Pants :D",
+  "genre": "Rock",
+  "director": "Arne Lang",
+  "releaseYear": 2008,
+  "durationMinutes": 4,
+  "rating": 2.9,
+  "description": "Carbonite web goalkeeper gloves are ergonomically designed to give easy fit"
+}
+
+### PUT movie (part)
+PUT {{MovieApi_HostAddress}}/api/movies/{{movieId}}
+Content-Type: application/json
+
+{
+  "id": 12,
+  "title": "VERY NEW! Tasty Plastic Pants - ROFL! :D",
+  "genre": "Rock",
+  "director": "Arne Lang",
+  "releaseYear": 2008,
+  "durationMinutes": 4,
+  "rating": 2.9,
+  "description": "Carbonite web goalkeeper gloves are ergonomically designed to give easy fit"
+}
