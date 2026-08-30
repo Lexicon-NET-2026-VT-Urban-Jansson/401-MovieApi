@@ -16,36 +16,29 @@ public class MoviesController : ControllerBase
         _context = context;
     }
 
-    // GET: api/Movie
+    // GET: api/movies
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Movie>>> GetMovie()
+    public async Task<ActionResult<IEnumerable<Movie>>> GetAllMovies()
     {
         return await _context.Movies.ToListAsync();
     }
 
-    // GET: api/Movie/5
+    // GET: api/movies/id
     [HttpGet("{id}")]
-    public async Task<ActionResult<Movie>> GetMovie(int id)
+    public async Task<ActionResult<Movie>> GetOneMovie(int id)
     {
         var movie = await _context.Movies.FindAsync(id);
 
-        if (movie == null)
-        {
-            return NotFound();
-        }
+        if (movie == null) return NotFound();
 
         return movie;
     }
 
-    // PUT: api/Movie/5
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    // PUT: api/movies/id
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutMovie(int? id, Movie movie)
+    public async Task<IActionResult> UpdateMovie(int? id, Movie movie)
     {
-        if (id != movie.Id)
-        {
-            return BadRequest();
-        }
+        if (id != movie.Id) return BadRequest();
 
         _context.Entry(movie).State = EntityState.Modified;
 
@@ -68,22 +61,22 @@ public class MoviesController : ControllerBase
         return NoContent();
     }
 
-    // POST: api/Movie
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    // POST: api/movies
     [HttpPost]
-    public async Task<ActionResult<Movie>> PostMovie(Movie movie)
+    public async Task<ActionResult<Movie>> PostNewMovie(Movie movie)
     {
         _context.Movies.Add(movie);
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction("GetMovie", new { id = movie.Id }, movie);
+        return CreatedAtAction("GetOneMovie", new { id = movie.Id }, movie);
     }
 
-    // DELETE: api/Movie/5
+    // DELETE: api/movies/id
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteMovie(int? id)
     {
         var movie = await _context.Movies.FindAsync(id);
+
         if (movie == null)
         {
             return NotFound();

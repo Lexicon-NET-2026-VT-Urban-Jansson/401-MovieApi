@@ -1,20 +1,21 @@
 @MovieApi_HostAddress = http://localhost:5225
-@movieId = 15
+@MovieApi_Controller = api/movies
+@movieId = 28
 
 ### Get all movies 
-GET {{MovieApi_HostAddress}}/api/movies
+GET {{MovieApi_HostAddress}}/{{MovieApi_Controller}}
 Accept: application/json
 
 ### Get movie X 
-GET {{MovieApi_HostAddress}}/api/movies/{{movieId}}
+GET {{MovieApi_HostAddress}}/{{MovieApi_Controller}}/{{movieId}}
 Accept: application/json
 
 ### Delete movie X
-DELETE {{MovieApi_HostAddress}}/api/movies/{{movieId}}
+DELETE {{MovieApi_HostAddress}}/{{MovieApi_Controller}}/{{movieId}}
 Accept: application/json
 
 ### POST new movie (full)
-POST {{MovieApi_HostAddress}}/api/movies/
+POST {{MovieApi_HostAddress}}/{{MovieApi_Controller}}/
 Content-Type: application/json
 
 {
@@ -27,13 +28,13 @@ Content-Type: application/json
   "description": "Carbonite web goalkeeper gloves are ergonomically designed to give easy fit"
 }
 
-### PUT movie (part)
-PUT {{MovieApi_HostAddress}}/api/movies/{{movieId}}
+### PUT movie (update part)
+PUT {{MovieApi_HostAddress}}/{{MovieApi_Controller}}/{{movieId}}
 Content-Type: application/json
 
 {
   "id": {{movieId}},
-  "title": "ALL NEW! Tasty Plastic Pants - LOL! :))",
+  "title": "ALL NEW!! Tasty Plastic Pants - ROFL! :D",
   "genre": "Rock",
   "director": "Arne Lang",
   "releaseYear": 2008,
