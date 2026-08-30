@@ -1,5 +1,5 @@
 @MovieApi_HostAddress = http://localhost:5225
-@movieId = 14
+@movieId = 15
 
 ### Get all movies 
 GET {{MovieApi_HostAddress}}/api/movies
@@ -32,8 +32,8 @@ PUT {{MovieApi_HostAddress}}/api/movies/{{movieId}}
 Content-Type: application/json
 
 {
-  "id": 12,
-  "title": "VERY NEW! Tasty Plastic Pants - ROFL! :D",
+  "id": {{movieId}},
+  "title": "ALL NEW! Tasty Plastic Pants - LOL! :))",
   "genre": "Rock",
   "director": "Arne Lang",
   "releaseYear": 2008,

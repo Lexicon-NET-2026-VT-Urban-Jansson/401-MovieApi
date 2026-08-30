@@ -1,10 +1,9 @@
 ﻿using Bogus;
 using Microsoft.EntityFrameworkCore;
 using MovieApi.Models;
-using MovieApi.Data;
 
 
-namespace MovieApi;
+namespace MovieApi.Data;
 
 public class SeedData
 {
@@ -22,27 +21,14 @@ public class SeedData
         await context.SaveChangesAsync();
     }
 
-
     private static List<Movie> GenerateMovies(int numberOfMovies)
     {
         List<Movie> movies = [];
 
         for (int i = 0; i < numberOfMovies; i++)
         {
-            //string fName = _faker!.Name.FirstName();
-            //string lName = _faker.Name.LastName();
-
             Movie movie = new Movie()
             {
-                //FirstName = fName,
-                //LastName = lName,
-                //Address = _faker.Address.StreetAddress(),
-                //ZipCode = _faker.Address.ZipCode(),
-                //City = _faker.Address.City(),
-                //EmailAddress = _faker.Internet.Email(fName, lName),
-                //PhoneNumber = _faker.Phone.PhoneNumber("0##-### ## ##")
-                //PhoneNumber = _faker.Phone.PhoneNumber()
-
                 Title = _faker!.Commerce.ProductName(),
                 Genre = _faker.Music.Genre(),
                 Director = _faker.Name.FullName(),
@@ -56,6 +42,4 @@ public class SeedData
         }
         return movies;
     }
-
-
 }

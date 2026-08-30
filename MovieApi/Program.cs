@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MovieApi;
 using MovieApi.Data;
+using MovieApi.Extensions;
 
 
 // Create a builder for the application
@@ -19,18 +20,14 @@ builder.Services.AddOpenApi();
 // Bulid application
 var app = builder.Build();
 
-// Data Seed - Bogus Faker
-using (var scope = app.Services.CreateScope())
-{
-    var context = scope.ServiceProvider.GetRequiredService<MovieApiDbContext>();
-    try { await SeedData.InitAsync(context); }
-    catch (Exception ex) { throw; }
-}
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    // Use Swagger middleware to generate and serve OpenAPI documentation
     app.MapOpenApi();
+
+    // Seed the database with initial data
+    await app.SeedDatabaseAsync();
 }
 
 // Use HTTPS redirection middleware to redirect HTTP requests to HTTPS
