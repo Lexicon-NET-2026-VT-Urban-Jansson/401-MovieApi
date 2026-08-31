@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieApi.Models;
 using MovieApi.Data;
+using MovieApi.Extensions;
 
 
 namespace MovieApi.Controllers;
@@ -18,20 +19,29 @@ public class MoviesController : ControllerBase
 
     // GET: api/movies
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Movie>>> GetAllMovies()
+    public async Task<ActionResult<IEnumerable<MovieDTO>>> GetAllMovies()
     {
-        return await _dbContext.Movies.ToListAsync();
+        var movies = await _dbContext.Movies.ToListAsync();
+        return movies.MoviesToDTO().ToList();
     }
 
     // GET: api/movies/id
     [HttpGet("{id}")]
-    public async Task<ActionResult<Movie>> GetOneMovie(int id)
+    public async Task<ActionResult<MovieDTO>> GetOneMovie(int id)
     {
         var movie = await _dbContext.Movies.FindAsync(id);
-
         if (movie == null) return NotFound();
+        return movie.MovieToDTO();
+    }
 
-        return movie;
+    // POST: api/movies
+    [HttpPost]
+    public async Task<ActionResult<MovieDTO>> CreateNewMovie(NewMovieDTO newMovieDTO)
+    {
+        var newMovie = newMovieDTO.CreateMovieFromDTO();
+        _dbContext.Movies.Add(newMovie);
+        await _dbContext.SaveChangesAsync();
+        return CreatedAtAction(nameof(GetOneMovie), new { id = newMovie.Id }, newMovie.MovieToDTO());
     }
 
     // PUT: api/movies/id
@@ -42,33 +52,15 @@ public class MoviesController : ControllerBase
 
         _dbContext.Entry(movie).State = EntityState.Modified;
 
-        try
-        {
-            await _dbContext.SaveChangesAsync();
-        }
+        try 
+            { await _dbContext.SaveChangesAsync(); }
         catch (DbUpdateConcurrencyException)
         {
-            if (!MovieExists(id))
-            {
-                return NotFound();
-            }
-            else
-            {
-                throw;
-            }
+            if (!MovieExists(id)) return NotFound();
+            else throw;
         }
 
         return NoContent();
-    }
-
-    // POST: api/movies
-    [HttpPost]
-    public async Task<ActionResult<Movie>> PostNewMovie(Movie movie)
-    {
-        _dbContext.Movies.Add(movie);
-        await _dbContext.SaveChangesAsync();
-
-        return CreatedAtAction("GetOneMovie", new { id = movie.Id }, movie);
     }
 
     // DELETE: api/movies/id
@@ -85,6 +77,7 @@ public class MoviesController : ControllerBase
         return NoContent();
     }
 
+    // MovieExists is a private helper method
     private bool MovieExists(int? id)
     {
         return _dbContext.Movies.Any(e => e.Id == id);

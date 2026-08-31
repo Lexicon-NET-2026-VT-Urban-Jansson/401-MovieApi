@@ -12,12 +12,14 @@ public class SeedData
 
     public static async Task InitAsync(MovieApiDbContext context)
     {
+        // Exit if the database already contains movies to avoid duplicate seeding
         if (await context.Movies.AnyAsync()) return;
 
         // For swedish locale, use "sv" instead of "en". The Faker library supports multiple locales.
         //_faker = new Faker("sv");
         _faker = new Faker("en");
 
+        // Generate a list of movies using the Faker library and add them to the database context
         IEnumerable<Movie> movies = GenerateMovies(NUMBER_OF_MOVIES);
         await context.AddRangeAsync(movies);
 
