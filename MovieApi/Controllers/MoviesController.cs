@@ -10,24 +10,24 @@ namespace MovieApi.Controllers;
 [ApiController]
 public class MoviesController : ControllerBase
 {
-    private readonly MovieApiDbContext _context;
+    private readonly MovieApiDbContext _dbContext;
     public MoviesController(MovieApiDbContext context)
     {
-        _context = context;
+        _dbContext = context;
     }
 
     // GET: api/movies
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Movie>>> GetAllMovies()
     {
-        return await _context.Movies.ToListAsync();
+        return await _dbContext.Movies.ToListAsync();
     }
 
     // GET: api/movies/id
     [HttpGet("{id}")]
     public async Task<ActionResult<Movie>> GetOneMovie(int id)
     {
-        var movie = await _context.Movies.FindAsync(id);
+        var movie = await _dbContext.Movies.FindAsync(id);
 
         if (movie == null) return NotFound();
 
@@ -40,11 +40,11 @@ public class MoviesController : ControllerBase
     {
         if (id != movie.Id) return BadRequest();
 
-        _context.Entry(movie).State = EntityState.Modified;
+        _dbContext.Entry(movie).State = EntityState.Modified;
 
         try
         {
-            await _context.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -65,8 +65,8 @@ public class MoviesController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Movie>> PostNewMovie(Movie movie)
     {
-        _context.Movies.Add(movie);
-        await _context.SaveChangesAsync();
+        _dbContext.Movies.Add(movie);
+        await _dbContext.SaveChangesAsync();
 
         return CreatedAtAction("GetOneMovie", new { id = movie.Id }, movie);
     }
@@ -75,21 +75,18 @@ public class MoviesController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteMovie(int? id)
     {
-        var movie = await _context.Movies.FindAsync(id);
+        var movie = await _dbContext.Movies.FindAsync(id);
 
-        if (movie == null)
-        {
-            return NotFound();
-        }
+        if (movie == null) return NotFound();
 
-        _context.Movies.Remove(movie);
-        await _context.SaveChangesAsync();
+        _dbContext.Movies.Remove(movie);
+        await _dbContext.SaveChangesAsync();
 
         return NoContent();
     }
 
     private bool MovieExists(int? id)
     {
-        return _context.Movies.Any(e => e.Id == id);
+        return _dbContext.Movies.Any(e => e.Id == id);
     }
 }

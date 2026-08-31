@@ -8,14 +8,17 @@ namespace MovieApi.Data;
 public class SeedData
 {
     private static Faker? _faker;
+    private const int NUMBER_OF_MOVIES = 10;
 
     public static async Task InitAsync(MovieApiDbContext context)
     {
         if (await context.Movies.AnyAsync()) return;
 
-        _faker = new Faker("en");   // ("sv");
+        // For swedish locale, use "sv" instead of "en". The Faker library supports multiple locales.
+        //_faker = new Faker("sv");
+        _faker = new Faker("en");
 
-        IEnumerable<Movie> movies = GenerateMovies(10);
+        IEnumerable<Movie> movies = GenerateMovies(NUMBER_OF_MOVIES);
         await context.AddRangeAsync(movies);
 
         await context.SaveChangesAsync();
@@ -32,8 +35,8 @@ public class SeedData
                 Title = _faker!.Commerce.ProductName(),
                 Genre = _faker.Music.Genre(),
                 Director = _faker.Name.FullName(),
-                ReleaseYear = _faker.Date.Between(new DateTime(1910, 1, 1), new DateTime(2026, 12, 31)).Year,
-                DurationMinutes = _faker.Date.Timespan(maxSpan: TimeSpan.FromHours(3)).Minutes,
+                ReleaseYear = _faker.Date.Between(new DateTime(1950, 1, 1), new DateTime(2026, 08, 30)).Year,
+                DurationMinutes = (int)_faker.Finance.Amount(min: 30, max: 180),
                 Rating = (double)_faker.Finance.Amount(min: 0, max: 10, decimals: 1),
                 Description = _faker.Commerce.ProductDescription(),
             }
