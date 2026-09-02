@@ -9,7 +9,7 @@ public static class ServiceExtensions
     {
         //services.AddScoped<IServiceManager, ServiceManager>();
         
-        services.AddScoped<IMoviesService, MoviesController>();
+        //services.AddScoped<IMoviesService, MoviesController>();
         //services.AddLazy<ICompanyService>();
     }
 }

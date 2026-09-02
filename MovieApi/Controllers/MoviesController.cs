@@ -10,7 +10,7 @@ namespace MovieApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class MoviesController : ControllerBase, IMoviesService
+public class MoviesController : ControllerBase //, IMoviesService
 {
     private readonly MovieApiDbContext _dbContext;
     public MoviesController(MovieApiDbContext context)
@@ -26,15 +26,36 @@ public class MoviesController : ControllerBase, IMoviesService
         return movies.MoviesToDTO().ToList();
     }
 
+
+
     // GET: api/movies/id
     [HttpGet("{id}")]
-    public async Task<ActionResult<MovieDTO>> GetOneMovie(int id)
+    public async Task<ActionResult<MapperlyMovieDTO>> GetOneMovie(int id)
     {
         // ToDo: Byt ut FindAsync mot FirstOrDefaultAsync och lägg till en Where-sats som filtrerar på id.
         var movie = await _dbContext.Movies.FindAsync(id);
         if (movie == null) return NotFound();
-        return movie.MovieToDTO();
+
+        //return movie.MovieToDTO();
+        //return MapperlyMovieToDTO(movie);
+        return movie.MapperlyMovieToDTO(); // <-- DET FUNKAR MED MAPPERLY!!! :D
     }
+
+
+    // GET: api/movies/id
+    //[HttpGet("{id}")]
+    //public async Task<ActionResult<MovieDTO>> GetOneMovie(int id)
+    //{
+    //    // ToDo: Byt ut FindAsync mot FirstOrDefaultAsync och lägg till en Where-sats som filtrerar på id.
+    //    var movie = await _dbContext.Movies.FindAsync(id);
+    //    if (movie == null) return NotFound();
+
+    //    return movie.MovieToDTO();
+    //}
+
+
+
+
 
     // POST: api/movies
     [HttpPost]
@@ -45,6 +66,9 @@ public class MoviesController : ControllerBase, IMoviesService
         await _dbContext.SaveChangesAsync();
         return CreatedAtAction(nameof(GetOneMovie), new { id = newMovie.Id }, newMovie.MovieToDTO());
     }
+
+
+
 
     /* -----------------------------------------------------------------
         // PUT: api/movies/id

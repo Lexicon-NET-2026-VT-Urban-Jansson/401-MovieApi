@@ -29,7 +29,7 @@ builder.Services.AddOpenApi();
 
 // Add service layer IMoviesService to the container
 //builder.Services.AddServiceLayer();
-builder.Services.AddScoped<IMoviesService, MoviesController>();
+//builder.Services.AddScoped<IMoviesService, MoviesController>();
 
 // Bulid application
 var app = builder.Build();
