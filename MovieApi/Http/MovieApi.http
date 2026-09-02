@@ -19,7 +19,7 @@ POST {{MovieApi_HostAddress}}/{{MovieApi_Controller}}/
 Content-Type: application/json
 
 {
-  "title": "xxlNEW! Tasty Plastic Pants :D",
+  "title": "xxxlNEW! Tasty Plastic Pants :D",
   "genre": "Rock",
   "director": "Arne Lang",
   "releaseYear": 2008,

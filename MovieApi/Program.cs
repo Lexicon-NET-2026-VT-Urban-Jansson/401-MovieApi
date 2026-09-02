@@ -1,7 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+using MovieApi.Controllers;
 using MovieApi.Data;
 using MovieApi.Extensions;
+using MovieApi.Services;
 
+
+//const bool DO_TEST_MAPPERLY = false;
 
 // Create a builder for the application
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +19,17 @@ builder.Services.AddControllers();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+
+//#if DO_TEST_MAPPERLY
+//builder.Services.AddScoped<IMoviesController, MoviesControllerMapperly>();
+//#else
+//builder.Services.AddScoped<IMoviesController, MoviesControllerCustom>();
+//#endif
+
+// Add service layer IMoviesService to the container
+//builder.Services.AddServiceLayer();
+builder.Services.AddScoped<IMoviesService, MoviesController>();
 
 // Bulid application
 var app = builder.Build();
