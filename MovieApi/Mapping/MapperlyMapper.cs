@@ -4,7 +4,7 @@ using Riok.Mapperly.Abstractions;
 namespace MovieApi.Mapping;
 
 [Mapper]
-public partial class MapperlyMapper //: IMapper
+public partial class MapperlyMapper : IMapper
 {
     public partial MovieDTO MovieToDTO(Movie movie);
     public partial IEnumerable<MovieDTO> MoviesToDTO(IEnumerable<Movie> movies);

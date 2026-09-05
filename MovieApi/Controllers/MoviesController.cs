@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MovieApi.Data;
 using MovieApi.Models;
 using MovieApi.Services;
 
