@@ -2,7 +2,7 @@
 
 namespace MovieApi.Extensions;
 
-public static class MovieMapper
+public static class CustomMapper
 {
     public static MovieDTO MovieToDTO(this Movie movie)
     {

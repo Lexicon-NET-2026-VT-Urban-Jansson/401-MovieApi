@@ -3,14 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using MovieApi.Data;
 using MovieApi.Extensions;
 using MovieApi.Models;
-using MovieApi.Services;
 
 
 namespace MovieApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class MoviesController : ControllerBase //, IMoviesService
+public class MoviesController : ControllerBase //, IMoviesService = HELT FEL!
 {
     private readonly MovieApiDbContext _dbContext;
     public MoviesController(MovieApiDbContext context)
@@ -32,7 +31,7 @@ public class MoviesController : ControllerBase //, IMoviesService
     //
     // GET: api/movies
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<MapperlyMovieDTO>>> GetAllMovies()
+    public async Task<ActionResult<IEnumerable<MovieDTO>>> GetAllMovies()
     {
         var movies = await _dbContext.Movies.ToListAsync();
         return movies.MapperlyMoviesToDTO().ToList(); // <-- DET FUNKAR MED MAPPERLY!!! :D
@@ -57,12 +56,12 @@ public class MoviesController : ControllerBase //, IMoviesService
     //
     // GET: api/movies/id
     [HttpGet("{id}")]
-    public async Task<ActionResult<MapperlyMovieDTO>> GetOneMovie(int id)
+    public async Task<ActionResult<MovieDTO>> GetOneMovie(int id)
     {
         // ToDo: Byt ut FindAsync mot FirstOrDefaultAsync och lägg till en Where-sats som filtrerar på id.
         var movie = await _dbContext.Movies.FindAsync(id);
         if (movie == null) return NotFound();
-        return movie.MapperlyMovieToDTO(); // <-- DET FUNKAR MED MAPPERLY!!! :D
+        return movie.MovieToDTO(); // <-- DET FUNKAR MED MAPPERLY!!! :D
     }
 
 
@@ -83,12 +82,12 @@ public class MoviesController : ControllerBase //, IMoviesService
     //
     // POST: api/movies
     [HttpPost]
-    public async Task<ActionResult<MapperlyMovieDTO>> CreateNewMovie(NewMapperlyMovieDTO newMapperlyMovieDTO)
+    public async Task<ActionResult<MovieDTO>> CreateMovie(NewMovieDTO newMovieDTO)
     {
-        var newMovie = newMapperlyMovieDTO.CreateMovieFromMapperlyDTO();
-        _dbContext.Movies.Add(newMovie);
+        Movie movie = newMovieDTO.MapperlyCreateMovieFromDTO();
+        _dbContext.Movies.Add(movie);
         await _dbContext.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetOneMovie), new { id = newMovie.Id }, newMovie.MapperlyMovieToDTO());
+        return CreatedAtAction(nameof(GetOneMovie), new { id = movie.Id }, movie.MovieToDTO());
     }
 
 
