@@ -10,16 +10,12 @@ Accept: application/json
 GET {{MovieApi_HostAddress}}/{{MovieApi_Controller}}/{{movieId}}
 Accept: application/json
 
-### Delete movie 'Id'
-DELETE {{MovieApi_HostAddress}}/{{MovieApi_Controller}}/{{movieId}}
-Accept: application/json
-
 ### POST new movie (full)
 POST {{MovieApi_HostAddress}}/{{MovieApi_Controller}}/
 Content-Type: application/json
 
 {
-  "title": "VERY NEW! Tasty Plastic Pants :D",
+  "title": "ALL XXL! VERY NEW! Tasty Plastic Pants :D",
   "genre": "Rock",
   "director": "Arne Lang",
   "releaseYear": 2008,
@@ -27,6 +23,10 @@ Content-Type: application/json
   "rating": 2.9,
   "description": "Carbonite web goalkeeper gloves are ergonomically designed to give easy fit"
 }
+
+### Delete movie 'Id'
+DELETE {{MovieApi_HostAddress}}/{{MovieApi_Controller}}/{{movieId}}
+Accept: application/json
 
 ### PUT movie 'Id' (update part) OBS! TA BORT "Id": {{movieId}} SEN!!
 PUT {{MovieApi_HostAddress}}/{{MovieApi_Controller}}/{{movieId}}

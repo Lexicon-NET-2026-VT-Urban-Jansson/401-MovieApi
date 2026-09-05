@@ -1,95 +1,35 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieApi.Data;
-using MovieApi.Extensions;
 using MovieApi.Models;
+using MovieApi.Services;
 
 
 namespace MovieApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class MoviesController : ControllerBase //, IMoviesService = HELT FEL!
+public class MoviesController(IServiceManager serviceManager) : ControllerBase
 {
-    private readonly MovieApiDbContext _dbContext;
-    public MoviesController(MovieApiDbContext context)
-    {
-        _dbContext = context;
-    }
+    private readonly IServiceManager _serviceManager = serviceManager;
 
-    // *** MY CUSTOM DTO! ***
-    //
-    //// GET: api/movies
-    //[HttpGet]
-    //public async Task<ActionResult<IEnumerable<MovieDTO>>> GetAllMovies()
-    //{
-    //    var movies = await _dbContext.Movies.ToListAsync();
-    //    return movies.MoviesToDTO().ToList();
-    //}
-
-    // *** MAPPERLY DTO! ***
-    //
-    // GET: api/movies
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<MovieDTO>>> GetAllMovies()
-    {
-        var movies = await _dbContext.Movies.ToListAsync();
-        return movies.MapperlyMoviesToDTO().ToList(); // <-- DET FUNKAR MED MAPPERLY!!! :D
-    }
+    public async Task<ActionResult<IEnumerable<MovieDTO>>> GetAllMovies() 
+        => Ok(await _serviceManager.MoviesService.GetAllMovies());
 
-
-
-    // *** MY CUSTOM DTO! ***
-    //
-    // GET: api/movies/id
-    //[HttpGet("{id}")]
-    //public async Task<ActionResult<MovieDTO>> GetOneMovie(int id)
-    //{
-    //    // ToDo: Byt ut FindAsync mot FirstOrDefaultAsync och lägg till en Where-sats som filtrerar på id.
-    //    var movie = await _dbContext.Movies.FindAsync(id);
-    //    if (movie == null) return NotFound();
-    //
-    //    return movie.MovieToDTO();
-    //}
-
-    // *** MAPPERLY DTO! ***
-    //
-    // GET: api/movies/id
     [HttpGet("{id}")]
     public async Task<ActionResult<MovieDTO>> GetOneMovie(int id)
     {
-        // ToDo: Byt ut FindAsync mot FirstOrDefaultAsync och lägg till en Where-sats som filtrerar på id.
-        var movie = await _dbContext.Movies.FindAsync(id);
-        if (movie == null) return NotFound();
-        return movie.MovieToDTO(); // <-- DET FUNKAR MED MAPPERLY!!! :D
+        var dto = await _serviceManager.MoviesService.GetOneMovie(id);
+        return dto is null ? NotFound() : Ok(dto);
     }
 
-
-
-    // *** MY CUSTOM DTO! ***
-    //
-    //// POST: api/movies
-    //[HttpPost]
-    //public async Task<ActionResult<MovieDTO>> CreateNewMovie(NewMovieDTO newMovieDTO)
-    //{
-    //    var newMovie = newMovieDTO.CreateMovieFromDTO();
-    //    _dbContext.Movies.Add(newMovie);
-    //    await _dbContext.SaveChangesAsync();
-    //    return CreatedAtAction(nameof(GetOneMovie), new { id = newMovie.Id }, newMovie.MovieToDTO());
-    //}
-
-    // *** MAPPERLY DTO! ***
-    //
-    // POST: api/movies
     [HttpPost]
-    public async Task<ActionResult<MovieDTO>> CreateMovie(NewMovieDTO newMovieDTO)
-    {
-        Movie movie = newMovieDTO.MapperlyCreateMovieFromDTO();
-        _dbContext.Movies.Add(movie);
-        await _dbContext.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetOneMovie), new { id = movie.Id }, movie.MovieToDTO());
-    }
-
+    public async Task<ActionResult<MovieDTO>> CreateMovie(NewMovieDTO newMovieDTO) 
+        => Ok(await _serviceManager.MoviesService.CreateMovie(newMovieDTO));
+    
+    // Ska detta med??
+    // return CreatedAtAction(nameof(GetOneMovie), new { id = movie.Id }, movie.MovieToDTO());
 
 
 

@@ -2,16 +2,15 @@ using Microsoft.EntityFrameworkCore;
 using MovieApi.Controllers;
 using MovieApi.Data;
 using MovieApi.Extensions;
-using MovieApi.Services;
 
-
-//const bool DO_TEST_MAPPERLY = false;
 
 // Create a builder for the application
 var builder = WebApplication.CreateBuilder(args);
 
+// Get the connection string from the configuration, or throw an exception if not found
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
+    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 // Setup database connection
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<MovieApiDbContext>(options => options.UseSqlServer(connectionString));
 
 // Add services to the container.
@@ -20,16 +19,8 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-
-//#if DO_TEST_MAPPERLY
-//builder.Services.AddScoped<IMoviesController, MoviesControllerMapperly>();
-//#else
-//builder.Services.AddScoped<IMoviesController, MoviesControllerCustom>();
-//#endif
-
-// Add service layer IMoviesService to the container
-//builder.Services.AddServiceLayer();
-//builder.Services.AddScoped<IMoviesService, MoviesController>();
+// Add service layer IMoviesService & IMapper to the container
+builder.Services.AddServiceLayer(builder.Configuration);
 
 // Bulid application
 var app = builder.Build();

@@ -1,10 +1,11 @@
-﻿using MovieApi.Models;
+﻿using MovieApi.Controllers;
+using MovieApi.Models;
 
-namespace MovieApi.Extensions;
+namespace MovieApi.Mapping;
 
-public static class CustomMapper
+public class CustomMapper : IMapper
 {
-    public static MovieDTO MovieToDTO(this Movie movie)
+    public MovieDTO MovieToDTO(Movie movie)
     {
         return new MovieDTO
         {
@@ -19,12 +20,13 @@ public static class CustomMapper
         };
     }
 
-    public static IEnumerable<MovieDTO> MoviesToDTO(this IEnumerable<Movie> movies)
+    public IEnumerable<MovieDTO> MoviesToDTO(IEnumerable<Movie> movies)
     {
-        return movies.Select(m => m.MovieToDTO());
+        //return movies.Select(m => m.MovieToDTO());
+        return movies.ToList().Select(m => MovieToDTO(m));
     }
 
-    public static Movie CreateMovieFromDTO(this NewMovieDTO newMovieDTO)
+    public Movie CreateMovieFromDTO(NewMovieDTO newMovieDTO)
     {
         return new Movie
         {

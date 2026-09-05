@@ -1,16 +1,15 @@
 ﻿using MovieApi.Models;
 using Riok.Mapperly.Abstractions;
 
-namespace MovieApi.Controllers;
+namespace MovieApi.Mapping;
 
 [Mapper]
-public static partial class MapperlyMapper
+public partial class MapperlyMapper //: IMapper
 {
-    public static partial MovieDTO MovieToDTO(this Movie movie);
-    public static partial IEnumerable<MovieDTO> MapperlyMoviesToDTO(this IEnumerable<Movie> movies);
-    public static partial Movie MapperlyCreateMovieFromDTO(this NewMovieDTO newMovieDTO);
+    public partial MovieDTO MovieToDTO(Movie movie);
+    public partial IEnumerable<MovieDTO> MoviesToDTO(IEnumerable<Movie> movies);
+    public partial Movie CreateMovieFromDTO(NewMovieDTO newMovieDTO);
 }
-
 
 
 /* ----------------------------------------------------------------------------- *
