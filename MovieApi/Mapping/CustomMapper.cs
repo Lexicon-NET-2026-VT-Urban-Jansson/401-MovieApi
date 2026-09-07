@@ -5,9 +5,9 @@ public class CustomMapper : IMapper
 {
     public IEnumerable<MovieDTO> MoviesToDTO(IEnumerable<Movie> movies)
     {
-        //return movies.Select(m => m.MovieToDTO());
-        //return movies.ToList().Select(m => MovieToDTO(m));
-        return System.Linq.Enumerable.Select(movies, x => MovieToDTO(x));
+        return movies.Select(m => MovieToDTO(m));
+        // This version is by the Mapperly source generator, but there is no real difference.
+        // return System.Linq.Enumerable.Select(movies, x => MovieToDTO(x));
     }
 
     public MovieDTO MovieToDTO(Movie movie)
