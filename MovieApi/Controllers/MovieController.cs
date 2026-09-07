@@ -5,9 +5,10 @@ using MovieApi.Services;
 namespace MovieApi.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-public class MoviesController(IServiceManager serviceManager) : ControllerBase
+public class MovieController(IServiceManager serviceManager) : ControllerBase 
 {
     private readonly IServiceManager _serviceManager = serviceManager;
+
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<MovieDTO>>> GetAllMovies() => 

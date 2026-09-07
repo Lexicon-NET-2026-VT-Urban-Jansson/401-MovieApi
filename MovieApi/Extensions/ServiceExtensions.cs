@@ -1,5 +1,4 @@
-﻿using MovieApi.Controllers;
-using MovieApi.Mapping;
+﻿using MovieApi.Mapping;
 using MovieApi.Services;
 
 namespace MovieApi.Extensions;

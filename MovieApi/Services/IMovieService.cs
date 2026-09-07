@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MovieApi.Models;
+﻿using MovieApi.Models;
     
 namespace MovieApi.Services;
 public interface IMovieService

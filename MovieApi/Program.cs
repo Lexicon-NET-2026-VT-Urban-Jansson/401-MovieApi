@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using MovieApi.Controllers;
 using MovieApi.Data;
 using MovieApi.Extensions;
 
@@ -15,6 +14,9 @@ builder.Services.AddDbContext<MovieApiDbContext>(options => options.UseSqlServer
 // Add services to the container.
 builder.Services.AddControllers();
 
+// Add Swagger/OpenAPI services to the container for API documentation
+builder.Services.AddSwaggerGen();
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
@@ -24,23 +26,34 @@ builder.Services.AddServiceLayer(builder.Configuration);
 // Bulid application
 var app = builder.Build();
 
+
+// *** DEVELOPMENT ONLY ***
+//
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     // Use Swagger middleware to generate and serve OpenAPI documentation
     app.MapOpenApi();
 
+    // Use Swagger UI middleware to provide a user interface for exploring the API
+    app.UseSwaggerUI();
+    app.UseSwagger();
+
     // Seed the database with initial data
     await app.SeedDatabaseAsync();
 }
 
+
 // Use HTTPS redirection middleware to redirect HTTP requests to HTTPS
 app.UseHttpsRedirection();
+
+// Use routing middleware to route incoming requests to the appropriate endpoints
+app.UseRouting();
 
 // Use authorization middleware to enable authorization capabilities
 app.UseAuthorization();
 
-// Map controller routes to the application
+// Use endpoint routing middleware to map controller routes to the application
 app.MapControllers();
 
 // Run the application  
