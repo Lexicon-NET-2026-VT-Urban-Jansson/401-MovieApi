@@ -2,9 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using MovieApi.Models;
 using MovieApi.Services;
 
-
 namespace MovieApi.Controllers;
-
 [Route("api/[controller]")]
 [ApiController]
 public class MoviesController(IServiceManager serviceManager) : ControllerBase
@@ -12,19 +10,19 @@ public class MoviesController(IServiceManager serviceManager) : ControllerBase
     private readonly IServiceManager _serviceManager = serviceManager;
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<MovieDTO>>> GetAllMovies() 
-        => Ok(await _serviceManager.MoviesService.GetAllMovies());
+    public async Task<ActionResult<IEnumerable<MovieDTO>>> GetAllMovies() => 
+        Ok(await _serviceManager.MovieService.ReadDTOs());
 
     [HttpGet("{id}")]
     public async Task<ActionResult<MovieDTO>> GetOneMovie(int id)
     {
-        var dto = await _serviceManager.MoviesService.GetOneMovie(id);
+        var dto = await _serviceManager.MovieService.ReadDTO(id);
         return dto is null ? NotFound() : Ok(dto);
     }
 
     [HttpPost]
-    public async Task<ActionResult<MovieDTO>> CreateMovie(NewMovieDTO newMovieDTO) 
-        => Ok(await _serviceManager.MoviesService.CreateMovie(newMovieDTO));
+    public async Task<ActionResult<MovieDTO>> CreateMovie(NewMovieDTO newMovieDTO) => 
+        Ok(await _serviceManager.MovieService.WriteDTO(newMovieDTO));
     
     // Ska detta med??
     // return CreatedAtAction(nameof(GetOneMovie), new { id = movie.Id }, movie.MovieToDTO());

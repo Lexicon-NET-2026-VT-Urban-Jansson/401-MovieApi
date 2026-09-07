@@ -2,9 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MovieApi.Models;
 
-
 namespace MovieApi.Data;
-
 public class SeedData
 {
     private static Faker? _faker;

@@ -1,10 +1,15 @@
-﻿using MovieApi.Controllers;
-using MovieApi.Models;
+﻿using MovieApi.Models;
 
 namespace MovieApi.Mapping;
-
 public class CustomMapper : IMapper
 {
+    public IEnumerable<MovieDTO> MoviesToDTO(IEnumerable<Movie> movies)
+    {
+        //return movies.Select(m => m.MovieToDTO());
+        //return movies.ToList().Select(m => MovieToDTO(m));
+        return System.Linq.Enumerable.Select(movies, x => MovieToDTO(x));
+    }
+
     public MovieDTO MovieToDTO(Movie movie)
     {
         return new MovieDTO
@@ -18,12 +23,6 @@ public class CustomMapper : IMapper
             Rating = movie.Rating,
             Description = movie.Description
         };
-    }
-
-    public IEnumerable<MovieDTO> MoviesToDTO(IEnumerable<Movie> movies)
-    {
-        //return movies.Select(m => m.MovieToDTO());
-        return movies.ToList().Select(m => MovieToDTO(m));
     }
 
     public Movie CreateMovieFromDTO(NewMovieDTO newMovieDTO)

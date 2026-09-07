@@ -1,11 +1,9 @@
 ﻿using MovieApi.Models;
 
-namespace MovieApi.Mapping
+namespace MovieApi.Mapping;
+public interface IMapper
 {
-    public interface IMapper
-    {
-        Movie CreateMovieFromDTO(NewMovieDTO newMovieDTO);
-        IEnumerable<MovieDTO> MoviesToDTO(IEnumerable<Movie> movies);
-        MovieDTO MovieToDTO(Movie movie);
-    }
+    IEnumerable<MovieDTO> MoviesToDTO(IEnumerable<Movie> movies);
+    MovieDTO MovieToDTO(Movie movie);
+    Movie CreateMovieFromDTO(NewMovieDTO newMovieDTO);
 }

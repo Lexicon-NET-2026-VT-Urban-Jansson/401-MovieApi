@@ -1,11 +1,5 @@
 ﻿namespace MovieApi.Services;
-
-public class ServiceManager : IServiceManager
+public class ServiceManager(IMovieService movieService) : IServiceManager
 {
-    public IMoviesService MoviesService { get; }
-
-    public ServiceManager(IMoviesService moviesService)
-    {
-        MoviesService = moviesService;
-    }
+    public IMovieService MovieService { get; } = movieService;
 }

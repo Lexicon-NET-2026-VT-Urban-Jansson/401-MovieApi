@@ -3,12 +3,11 @@ using MovieApi.Mapping;
 using MovieApi.Services;
 
 namespace MovieApi.Extensions;
-
 public static class ServiceExtensions
 {
     private static void AddMovieServices(this IServiceCollection services)
     {
-        services.AddScoped<IMoviesService, MovieService>();
+        services.AddScoped<IMovieService, MovieService>();
         services.AddScoped<IServiceManager, ServiceManager>();
     }
 

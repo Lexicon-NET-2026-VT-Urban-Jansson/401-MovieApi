@@ -3,7 +3,6 @@ using MovieApi.Controllers;
 using MovieApi.Data;
 using MovieApi.Extensions;
 
-
 // Create a builder for the application
 var builder = WebApplication.CreateBuilder(args);
 

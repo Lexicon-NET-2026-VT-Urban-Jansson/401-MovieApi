@@ -1,8 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MovieApi.Data;
+﻿using MovieApi.Data;
 
 namespace MovieApi.Extensions;
-
 public static class MovieApiExtensions
 {
     public static async Task SeedDatabaseAsync(this IApplicationBuilder app)

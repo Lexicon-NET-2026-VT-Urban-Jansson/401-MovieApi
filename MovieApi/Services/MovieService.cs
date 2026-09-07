@@ -3,34 +3,22 @@ using MovieApi.Data;
 using MovieApi.Models;
 using MovieApi.Mapping;
 
-
 namespace MovieApi.Services;
-
-public class MovieService : IMoviesService
+public class MovieService(MovieApiDbContext dbContext, IMapper mapper) : IMovieService
 {
-    private readonly MovieApiDbContext _dbContext;
-    private readonly IMapper _mapper;
+    private readonly MovieApiDbContext _dbContext = dbContext;
+    private readonly IMapper _mapper = mapper;
 
-    public MovieService(MovieApiDbContext context, IMapper mapper)
-    {
-        _dbContext = context;
-        _mapper = mapper;
-    }
+    public async Task<IEnumerable<MovieDTO>> ReadDTOs() => 
+        _mapper.MoviesToDTO(await _dbContext.Movies.ToListAsync());
 
-    public async Task<IEnumerable<MovieDTO>> GetAllMovies()
-    {
-        var movies = await _dbContext.Movies.ToListAsync();
-        return _mapper.MoviesToDTO(movies);
-    }
-
-    public async Task<MovieDTO> GetOneMovie(int id)
+    public async Task<MovieDTO> ReadDTO(int id)
     {
         var movie = await _dbContext.Movies.FirstOrDefaultAsync(m => m.Id == id);
-        if (movie == null) return null!;
-        return _mapper.MovieToDTO(movie);
+        return movie is null ? null! : _mapper.MovieToDTO(movie);
     }
 
-    public async Task<MovieDTO> CreateMovie(NewMovieDTO newMovieDTO)
+    public async Task<MovieDTO> WriteDTO(NewMovieDTO newMovieDTO)
     {
         var movie = _mapper.CreateMovieFromDTO(newMovieDTO);
         _dbContext.Movies.Add(movie);
